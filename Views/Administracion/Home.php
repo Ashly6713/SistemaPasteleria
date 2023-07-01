@@ -63,7 +63,7 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo base_url; ?>Cuartos"><h6><i class="fas fa-door-closed"></i> Gestionar</h6></a>
+                                    <a class="nav-link" href="<?php echo base_url; ?>Productos"><h6><i class="fas fa-door-closed"></i> Gestionar</h6></a>
                                     <a class="nav-link" href="<?php echo base_url; ?>Categorias"><h6><i class="fas fa-door-open"></i> Categorias</h6></a>
                                 </nav>
                             </div>
@@ -131,7 +131,7 @@
                                     <div class="card-body"><h4>Productos: <?php echo count($data['productos'])?>  <i class="fas fa-bath" style="float: right;"></i><h4> </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between"> 
                                     <?php if($_SESSION['rol'] == 1) {?>
-                                        <a class="small text-white" href="<?php echo base_url; ?>Cuartos">Ver productos</a> <?php } else{?>
+                                        <a class="small text-white" href="<?php echo base_url; ?>Productos">Ver productos</a> <?php } else{?>
                                             <span class="label">--------</span> <?php } ?>
                                     </div>
                                 </div>
@@ -167,26 +167,17 @@
                             <div class="card bg-success bg-opacity-25 mb-3" align="center" style="max-width: 16rem;">
                     <?php  } else if($row[$i]['disponibilidad'] == 0 && $row[$i]['estado'] == 1 ){  ?>
                             <div class="card bg-danger bg-opacity-25 mb-3" align="center" style="max-width: 16rem;">
-                                <div class="row">
-                                    <div class="col-xl-1 mb-3">
-                                        <button  class="fas fa-angle-right" onclick="HoraFin(event, <?php echo $row[$i]['id'];?>);"> Hora fin</button> 
-                                    </div>
-                                    <div class="col-xl-1">
-                                        <input id="hora_fin<?php echo $row[$i]['id'];?>" name="hora_fin<?php echo $row[$i]['id'];?>" value="" size="10" disabled></button>
-                                    </div>
-                                </div>
-                               <?php  } ?> 
+                                <?php  } ?> 
                             <div class="card-header" style="max-height: 2rem;">
-                                <h5><p class="room_number" > <i class="fas fa-bath"></i> Nro.<?php echo $row[$i]['numero'];?></p>
+                                <h5><p class="room_number" > <i class="fas fa-cake"></i><?php echo $row[$i]['nombre_c'];?></p>
                                 </h5>
                             </div>
                             <div class="card-body" style="max-height: 5rem;">
-                                <div class="caption">
+                                <div class="row">
                                     <label class="categoria"><?php echo $row[$i]['nombre'];?></label>
-                                    <br>
-                                    <?php  for($j=0;$j< $row[$i]['capacidad']; $j++){ ?>
-                                        <i class="fas fa-person" ></i>
-                                    <?php  } ?> 
+                                </div>
+                                <div class="row">
+                                    <label class="categoria"><?php echo $row[$i]['precio'];?></label>
                                 </div>
                             </div>
                             <?php /* if($row[$i]['disponibilidad'] == 1 && $row[$i]['estado'] == 1 ){  ?>

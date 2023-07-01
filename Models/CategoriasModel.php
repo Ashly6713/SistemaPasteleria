@@ -1,27 +1,26 @@
 <?php
 class CategoriasModel extends Query{
-    private  $nombre, $capacidad, $precio_hora, $estado, $id, $data;
+    private  $nombre, $descripcion, $precio_hora, $estado, $id, $data;
 public function __construct(){
     parent::__construct();
 }
 public function getCategorias()
 {
-    $sql = "SELECT * FROM categoria_cuarto";
+    $sql = "SELECT * FROM categoria";
     $data = $this->selectAll($sql);
     return $data;
 }
-public function registrarCategoria(string $nombre, string $capacidad, string $precio_hora, int $estado )
+public function registrarCategoria(string $nombre, string $descripcion, int $estado )
 {
     $this->nombre = $nombre;
-    $this->capacidad = $capacidad;
-    $this->precio_hora = $precio_hora;
+    $this->descripcion = $descripcion;
     $this->estado = $estado;
-    $vericar = "SELECT * FROM categoria_cuarto WHERE nombre = '$this->nombre'";
+    $vericar = "SELECT * FROM categoria WHERE nombre = '$this->nombre'";
     $existe = $this->select($vericar);
     if(empty($existe)){
 
-        $sql = "INSERT INTO categoria_cuarto(nombre, capacidad, precio_hora, estado) VALUES (?,?,?,?)";
-        $datos = array($this->nombre, $this->capacidad, $this->precio_hora, $this->estado);
+        $sql = "INSERT INTO categoria(nombre, descripcion, estado) VALUES (?,?,?)";
+        $datos = array($this->nombre, $this->descripcion, $this->estado);
         $data = $this->save($sql, $datos);
         if($data == 1){
           $res = 'ok';
@@ -35,15 +34,14 @@ public function registrarCategoria(string $nombre, string $capacidad, string $pr
 }
 
 
-public function modificarCategoria(string $nombre, string $capacidad, string $precio_hora, int $estado, int $id )
+public function modificarCategoria(string $nombre, string $descripcion, int $estado, int $id )
 {
     $this->nombre = $nombre;
-    $this->capacidad = $capacidad;
-    $this->precio_hora = $precio_hora;
+    $this->descripcion = $descripcion;
     $this->id = $id;
     $this->estado = $estado;
-    $sql = "UPDATE categoria_cuarto SET nombre = ?, capacidad = ?, precio_hora = ?,  estado = ? WHERE id = ?";
-    $datos = array($this->nombre, $this->capacidad, $this->precio_hora, $this->estado, $this->id);
+    $sql = "UPDATE categoria SET nombre = ?, descripcion = ?, estado = ? WHERE id = ?";
+    $datos = array($this->nombre, $this->descripcion, $this->estado, $this->id);
     $data = $this->save($sql, $datos);
     if($data == 1){
       $res = 'modificado';
@@ -54,21 +52,21 @@ public function modificarCategoria(string $nombre, string $capacidad, string $pr
 }
 
 public function editarCategoria(int $id){
-    $sql = "SELECT * FROM categoria_cuarto WHERE id = $id";
+    $sql = "SELECT * FROM categoria WHERE id = $id";
     $data = $this->select($sql);
     return $data;
 }
 public function accionCategoria( int $estado,int $id){
     $this->id = $id;
     $this->estado = $estado;
-    $sql = "UPDATE categoria_cuarto SET estado = ? WHERE id = ?";
+    $sql = "UPDATE categoria SET estado = ? WHERE id = ?";
     $datos = array($this->estado, $this->id);
     $data = $this->save($sql, $datos);
     return $data;
 }
 public function eliminarCategoria(int $id){
     $this->id = $id;
-    $sql = "DELETE FROM categoria_cuarto WHERE id = ?";
+    $sql = "DELETE FROM categoria WHERE id = ?";
     $datos = array( $this->id);
     $data = $this->save($sql, $datos);
     return $data;

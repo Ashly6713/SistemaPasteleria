@@ -23,7 +23,7 @@ public function modificar(string $nit,string $nombre, string $telefono, string $
 }
 public function getCuartos()
 {
-    $sql = "SELECT p.*, cc.* FROM producto p INNER JOIN categoria cc WHERE p.categoria_id = cc.id";
+    $sql = "SELECT p.*, cc.nombre as nombre_c FROM producto p INNER JOIN categoria cc WHERE p.categoria_id = cc.id";
     $data = $this->selectAll($sql);
     return $data;
 }

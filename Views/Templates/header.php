@@ -49,12 +49,12 @@
                             </a> 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon text-white"><h5><i class="fas fa-bath" ></i></h5> </div>
-                                <h5 >  Cuartos</h5>
+                                <h5 >  Productos</h5>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo base_url; ?>Cuartos"><h6><i class="fas fa-door-closed"></i> Gestionar</h6></a>
+                                    <a class="nav-link" href="<?php echo base_url; ?>Productos"><h6><i class="fas fa-door-closed"></i> Gestionar</h6></a>
                                     <a class="nav-link" href="<?php echo base_url; ?>Categorias"><h6><i class="fas fa-door-open"></i> Categorias</h6></a>
                                 </nav>
                             </div>

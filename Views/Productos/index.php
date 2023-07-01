@@ -1,13 +1,13 @@
 <?php include "Views/Templates/header.php";?>
 <ol class="breadcrumb mb-4">
-     <h1><li class="breadcrumb-item active">Cuartos</li></h1>
+     <h1><li class="breadcrumb-item active">Productos</li></h1>
 </ol>
 
-<button class="btn btn-outline-primary btn-lg mb-2" type="button" onclick="frmCuarto();"><i class="fas fa-plus"></i> Nuevo</button>
+<button class="btn btn-outline-primary btn-lg mb-2" type="button" onclick="frmProducto();"><i class="fas fa-plus"></i> Nuevo</button>
 <script>localStorage.removeItem("selectedValue");</script>
 <script>
     window.onload = function() {
-      document.title = "Cuartos";
+      document.title = "Productos";
     };
 </script>
 <style>
@@ -50,11 +50,13 @@
 }
   
     </style>
-<table class="table table-sm table-hover" id="tblCuartos" style="width:100%">
+<table class="table table-sm table-hover" id="tblProductos" style="width:100%">
     <thead class="table-primary">
     <tr>
             <th>Id</th>
-            <th>Número</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Precio</th>
             <th>Disponibilidad</th>
             <th>Estado</th>
             <th>Categoria</th>
@@ -67,27 +69,35 @@
         </tr>
     </tbody>
 </table>
-<div id="nuevo_cuarto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+<div id="nuevo_producto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary opacity-50">
-                <h5 class="modal-title text-white" id="title">Nuevo Cuarto</h5>
+                <h5 class="modal-title text-white" id="title">Nuevo Producto</h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" id="frmCuarto">
+                <form method="post" id="frmProducto">
                     <div class="form-group">
-                        <label for="numero">Número</label>
+                        <label for="nombre">Nombre</label>
                         <input type="hidden" id="id" name = "id">
-                        <input id="numero" class="form-control" type="number" name="numero" placeholder="Numero del cuarto">
+                        <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Nombre de producto">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Descripcion</label>
+                        <input id="descripcion" class="form-control" type="text" name="descripcion" placeholder="Descripcion">
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio</label>
+                        <input id="precio" class="form-control" type="text" name="precio" placeholder="Precio">
                     </div>
                     <div class="form-group">
                         <label for="disponibilidad">Disponibilidad</label>
                         <select id="disponibilidad" class="form-control" name="disponibilidad">
-                            <option value="<?php echo 1;?>">Libre</option>
-                            <option value="<?php echo 0;?>">Ocupado</option>
+                            <option value="<?php echo 1;?>">Disponible</option>
+                            <option value="<?php echo 0;?>">Agotado</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -105,8 +115,9 @@
                            <?php } ?>
                         </select>
                     </div>
-                    <div class="alert alert-danger text-center d-none" id="alertaN" role="alert">El campo Numero solo admite  números enteros</div>
-                   <button class="btn btn-primary" type="button" onclick="registrarCuarto(event);" id="btnAccion">Registrar</button>
+                    <div class="alert alert-danger text-center d-none" id="alertaL" role="alert">Los campos Nombre y descripcion solo aceptan letras</div>
+                    <div class="alert alert-danger text-center d-none" id="alertaN" role="alert">El campo precio solo admite numeros con decimal ej.: 99.80</div>
+                   <button class="btn btn-primary" type="button" onclick="registrarProducto(event);" id="btnAccion">Registrar</button>
                    <button class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
                 </form>
             </div>

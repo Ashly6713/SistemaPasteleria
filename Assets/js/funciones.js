@@ -1,4 +1,4 @@
-let  tblCuartos, tblCategorias, tblClientes, tblUsuarios;
+let  tblProductos, tblCategorias, tblClientes, tblUsuarios;
 
 document.addEventListener("DOMContentLoaded", function(){
   if (document.getElementById('tblUsuarios')){  
@@ -76,10 +76,7 @@ document.addEventListener("DOMContentLoaded", function(){
         'data' : 'nombre'
       },
     {
-        'data' : 'capacidad'
-    },
-    {
-        'data' : 'precio_hora'
+        'data' : 'descripcion'
     },
     {
         'data' : 'estado'
@@ -117,31 +114,37 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         ]
    }); }
-   //fin cuartos
-   if (document.getElementById('tblCuartos')){ 
-   tblCuartos = $('#tblCuartos').DataTable( {
+   //fin productos
+   if (document.getElementById('tblProductos')){ 
+   tblProductos = $('#tblProductos').DataTable( {
     ajax: {
-        url: base_url + "Cuartos/listar",
+        url: base_url + "Productos/listar",
         dataSrc: ''
     },
     columns: [ {
          'data' : 'id'
       },
       {
-        'data' : 'numero'
-      },
-    {
-        'data' : 'disponibilidad'
-    },
-    {
-        'data' : 'estado'
-    },
-    {
         'data' : 'nombre'
-    },
-    {
-        'data' : 'acciones'
-    }
+      },
+      {
+        'data' : 'descripcion'
+      },
+      {
+          'data' : 'precio'
+      },
+      {
+          'data' : 'disponibilidad'
+      },
+      {
+          'data' : 'estado'
+      },
+      {
+          'data' : 'nombre_c'
+      },
+      {
+          'data' : 'acciones'
+      }
     ],
     language: {
       "url": "//cdn.datatables.net/plug-ins/1.10.11/i18n/Spanish.json"
@@ -172,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function(){
             }
         ]
    }); }
-   //fin categoria cuartos
+   //fin categoria productos
    if (document.getElementById('tblClientes')){ 
    tblClientes = $('#tblClientes').DataTable( {
     ajax: {
@@ -519,22 +522,25 @@ function btnReingresarUser(id){
     
 }
 //fin Usuarios
-function frmCuarto() {
-  document.getElementById("title").innerHTML = "Nuevo Cuarto";
+function frmProducto() {
+  document.getElementById("title").innerHTML = "Nuevo Producto";
   document.getElementById("btnAccion").innerHTML = "Registrar";
-  document.getElementById("frmCuarto").reset();
-  $("#nuevo_cuarto").modal("show");
+  document.getElementById("frmProducto").reset();
+  $("#nuevo_producto").modal("show");
   document.getElementById("id").value = "";
 }
-function registrarCuarto(e) {
+function registrarProducto(e) {
   e.preventDefault();
+  document.getElementById("alertaL").classList.add("d-none");
   document.getElementById("alertaN").classList.add("d-none");
-  const numero = document.getElementById("numero");
+  const nombre = document.getElementById("nombre");
+  const descripcion = document.getElementById("descripcion");
+  const precio = document.getElementById("precio");
   const disponibilidad = document.getElementById("disponibilidad");
   const estado = document.getElementById("estado");
   const categoria = document.getElementById("categoria");
   
-  if (numero.value == "" || disponibilidad.value == ""|| estado.value == "" || categoria.value == "" ) {
+  if (nombre.value == "" || descripcion.value == ""|| precio.value == "" || disponibilidad.value == ""|| estado.value == "" || categoria.value == "" ) {
       Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -543,8 +549,8 @@ function registrarCuarto(e) {
           timer: 3000
         })
   } else{
-      const url = base_url + "Cuartos/registrar";
-      const frm = document.getElementById("frmCuarto");
+      const url = base_url + "Productos/registrar";
+      const frm = document.getElementById("frmProducto");
       const http = new XMLHttpRequest();
       http.open("POST", url, true);
       http.send(new FormData(frm));
@@ -555,25 +561,27 @@ function registrarCuarto(e) {
               Swal.fire({
                   position: 'top-end',
                   icon: 'success',
-                  title: 'Cuarto registrado con éxito',
+                  title: 'Producto registrado con éxito',
                   showConfirmButton: false,
                   timer: 3000
                 })
                 frm.reset();
-                $("#nuevo_cuarto").modal("hide");
-                tblCuartos.ajax.reload();
+                $("#nuevo_producto").modal("hide");
+                tblProductos.ajax.reload();
               }else if(res == "modificado"){
                   Swal.fire({
                       position: 'top-end',
                       icon: 'success',
-                      title: 'Cuarto modificado con éxito',
+                      title: 'Producto modificado con éxito',
                       showConfirmButton: false,
                       timer: 3000
                     })
-                    $("#nuevo_caurto").modal("hide");
-                   tblCuartos.ajax.reload();
+                    $("#nuevo_producto").modal("hide");
+                   tblProductos.ajax.reload();
               }else{
-                if(res == "numeros"){
+                if(res == "letras"){
+                  document.getElementById("alertaL").classList.remove("d-none");
+                }else if(res == "numeros"){
                   document.getElementById("alertaN").classList.remove("d-none");
                 }else {
                   Swal.fire({
@@ -592,11 +600,11 @@ function registrarCuarto(e) {
 
 }
 
-function btnEditarCuarto(id){
-  document.getElementById("alertaN").classList.add("d-none");
-  document.getElementById("title").innerHTML = "Modificar Cuarto";
+function btnEditarProducto(id){
+  document.getElementById("alertaL").classList.add("d-none");
+  document.getElementById("title").innerHTML = "Modificar Producto";
   document.getElementById("btnAccion").innerHTML = "Modificar";
-  const url = base_url + "Cuartos/editar/"+id;
+  const url = base_url + "Productos/editar/"+id;
   const http = new XMLHttpRequest();
   http.open("GET", url, true);
   http.send();
@@ -604,19 +612,21 @@ function btnEditarCuarto(id){
       if (this.readyState == 4 && this.status == 200) {
         const res = JSON.parse(this.responseText);
          document.getElementById("id").value = res.id;
-         document.getElementById("numero").value = res.numero;
+         document.getElementById("nombre").value = res.nombre;
+        document.getElementById("descripcion").value = res.descripcion;
+        document.getElementById("precio").value = res.precio;
         document.getElementById("disponibilidad").value = res.disponibilidad;
         document.getElementById("estado").value = res.estado;
         document.getElementById("categoria").value = res.categoria_id;
-        $("#nuevo_cuarto").modal("show");
+        $("#nuevo_producto").modal("show");
       }
   }
 }
 
-function btnEliminarCuarto(id){
+function btnEliminarProducto(id){
   Swal.fire({
       title: 'Esta seguro de eliminar?',
-      text: "El cuarto se eliminará de forma permanente!",
+      text: "El producto se eliminará de forma permanente!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -625,7 +635,7 @@ function btnEliminarCuarto(id){
       cancelButtonText: 'No!'
     }).then((result) => {
       if (result.isConfirmed) {
-          const url = base_url + "Cuartos/eliminar/"+id;
+          const url = base_url + "Productos/eliminar/"+id;
           const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -635,11 +645,11 @@ function btnEliminarCuarto(id){
             if (res == "ok"){
               Swal.fire(
                   'Mensaje!',
-                  'Cuarto eliminado con éxito.',
+                  'Producto eliminado con éxito.',
                   'success'
                 )
                 
-                tblCuartos.ajax.reload();
+                tblProductos.ajax.reload();
             }else{
               Swal.fire(
                   'Mensaje!',
@@ -654,10 +664,10 @@ function btnEliminarCuarto(id){
     })
 
 }
-function btnDeshabilitarCuarto(id){
+function btnDeshabilitarProducto(id){
       Swal.fire({
           title: 'Esta seguro de eliminar?',
-          text: "El cuarto no se eliminará de forma permanente, solo cambiará el estado a inactivo!",
+          text: "El producto no se eliminará de forma permanente, solo cambiará el estado a inactivo!",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -666,7 +676,7 @@ function btnDeshabilitarCuarto(id){
           cancelButtonText: 'No!'
         }).then((result) => {
           if (result.isConfirmed) {
-              const url = base_url + "Cuartos/deshabilitar/"+id;
+              const url = base_url + "Productos/deshabilitar/"+id;
               const http = new XMLHttpRequest();
           http.open("GET", url, true);
           http.send();
@@ -676,11 +686,11 @@ function btnDeshabilitarCuarto(id){
                 if (res == "ok"){
                   Swal.fire(
                       'Mensaje!',
-                      'Cuarto eliminado con éxito.',
+                      'Producto eliminado con éxito.',
                       'success'
                     )
                     
-                    tblCuartos.ajax.reload();
+                    tblProductos.ajax.reload();
                 }else{
                   Swal.fire(
                       'Mensaje!',
@@ -695,7 +705,7 @@ function btnDeshabilitarCuarto(id){
         })
   
 }
-function btnReingresarCuarto(id){
+function btnReingresarProducto(id){
       Swal.fire({
           title: 'Esta seguro de reingresar?',
           icon: 'warning',
@@ -706,7 +716,7 @@ function btnReingresarCuarto(id){
           cancelButtonText: 'No!'
         }).then((result) => {
           if (result.isConfirmed) {
-              const url = base_url + "Cuartos/reingresar/"+id;
+              const url = base_url + "Productos/reingresar/"+id;
               const http = new XMLHttpRequest();
           http.open("GET", url, true);
           http.send();
@@ -716,11 +726,11 @@ function btnReingresarCuarto(id){
                 if (res == "ok"){
                   Swal.fire(
                       'Mensaje!',
-                      'Cuarto reingresado con éxito.',
+                      'Producto reingresado con éxito.',
                       'success'
                     )
                     
-                    tblCuartos.ajax.reload();
+                    tblProductos.ajax.reload();
                 }else{
                   Swal.fire(
                       'Mensaje!',
@@ -736,7 +746,7 @@ function btnReingresarCuarto(id){
   
 }
 
-//fin Cuartos
+//fin Productos
 function frmCategoria() {
   document.getElementById("title").innerHTML = "Nueva Categoria";
   document.getElementById("btnAccion").innerHTML = "Registrar";
@@ -745,14 +755,12 @@ function frmCategoria() {
   document.getElementById("id").value = "";
 }
 function registrarCategoria(e) {
-  document.getElementById("alertaN").classList.add("d-none");
   document.getElementById("alertaL").classList.add("d-none");
   e.preventDefault();
   const nombre = document.getElementById("nombre");
-  const capacidad = document.getElementById("capacidad");
-  const precio_hora= document.getElementById("precio_hora");
+  const descripcion = document.getElementById("descripcion");
   const estado = document.getElementById("estado");
-  if (nombre.value == ""|| capacidad.value == "" || precio_hora.value == ""  || estado.value == "") {
+  if (nombre.value == ""|| descripcion.value == "" ||  estado.value == "") {
       Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -793,10 +801,7 @@ function registrarCategoria(e) {
               }else{
                 if(res == "letras"){
                   document.getElementById("alertaL").classList.remove("d-none");
-                } else if(res == "numeros"){
-                  document.getElementById("alertaN").classList.remove("d-none");
-                }else {
-                  document.getElementById("alertaN").classList.add("d-none");
+                } else {
                   document.getElementById("alertaL").classList.add("d-none");
                   Swal.fire({
                     position: 'top-end',
@@ -815,7 +820,6 @@ function registrarCategoria(e) {
 }
 
 function btnEditarCategoria(id){
-  document.getElementById("alertaN").classList.add("d-none");
   document.getElementById("alertaL").classList.add("d-none");
   document.getElementById("title").innerHTML = "Modificar Categoria";
   
@@ -831,8 +835,7 @@ function btnEditarCategoria(id){
             
             document.getElementById("id").value = res.id;
              document.getElementById("nombre").value = res.nombre;
-            document.getElementById("capacidad").value = res.capacidad;
-            document.getElementById("precio_hora").value = res.precio_hora;
+            document.getElementById("descripcion").value = res.descripcion;
             document.getElementById("estado").value = res.estado;
             $("#nuevo_categoria").modal("show");
           }
@@ -1292,7 +1295,7 @@ function buscarNumero(e){
             var options = document.querySelectorAll('#numero option');
             options.forEach(o => o.remove());
           } else {
-            alertas('El cuarto no existe', 'warning');
+            alertas('El producto no existe', 'warning');
             document.getElementById("numero").value = '';
             document.getElementById("numero").focus();
           }
@@ -1385,7 +1388,7 @@ function calcularHoras(e){
               }
               
           }else {
-            alertas('No existen cuartos diponibles', 'warning');
+            alertas('No existen productos diponibles', 'warning');
             document.getElementById("hora_inicio").focus();
             document.getElementById("numero").value = '';
           }
@@ -1445,16 +1448,15 @@ function cargarDetalle(){
           let html = '';
           res.detalle.forEach(row => {
             html += `<tr>
-            <td>${row['cuarto_id']}</td> 
+            <td>${row['producto_id']}</td> 
             <td>${row['numero']}</td>
             <td>${row['nombre']}</td>
-            <td>${row['precio_hora']}</td>
             <td>${row['hora_inicio']}</td>
             <td>${row['hora_fin']}</td>
             <td>${row['cantidad']}</td>
             <td>${row['sub_total']}</td>
             <td>
-            <button class="btn btn-danger" type="button" onclick="deleteDetalle(${row['cuarto_id']})">
+            <button class="btn btn-danger" type="button" onclick="deleteDetalle(${row['producto_id']})">
             <i class="fas fa-trash-alt"></i></button>
             </td>
            </tr>`;
