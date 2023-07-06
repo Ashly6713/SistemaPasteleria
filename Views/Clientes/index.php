@@ -57,6 +57,7 @@
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>Telefono</th>
+            <th>Dirección</th>
             <th>Estado</th>
             <th></th>
         </tr>
@@ -94,6 +95,10 @@
                     <div class="form-group">
                         <label for="telefono">Telefono</label>
                         <input id="telefono" class="form-control" type="text" name="telefono" placeholder="Telefono o Celular">
+                    </div>
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input id="direccion" class="form-control" type="text" name="direccion" placeholder="direccion o Celular">
                     </div>
                     <div class="form-group">
                         <label for="estado">Estado</label>

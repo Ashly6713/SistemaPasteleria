@@ -14,6 +14,8 @@ public function listar()
    for($i=0;$i< count($data); $i++){
       if($data[$i]['Rol']==1) {
          $data[$i]['Rol'] = '<p>Administrador</p>';
+      }else if($data[$i]['Rol']==3) {
+         $data[$i]['Rol'] = '<p>Cliente</p>';
       }else{
          $data[$i]['Rol'] = '<p>Empleado</p>';
       }
@@ -38,19 +40,34 @@ public function listar()
 }
 public function validar()
 {
-   if (empty($_POST['usuario']) || empty($_POST['clave'])){
+   if (empty($_POST['usuarioL']) || empty($_POST['claveL'])){
          $msg = "Los campos estan vacios"; 
    } else{
-      $usuario = $_POST['usuario'];
-      $clave = $_POST['clave'];
+      $usuario = $_POST['usuarioL'];
+      $clave = $_POST['claveL'];
       $hash = hash("SHA256", $clave);
       $data = $this->model->getUsuario($usuario, $hash);
       if($data){
          $msg = "ok";
            $_SESSION['id']  = $data['id'] ;
            $_SESSION['nom_usuario']  = $data['nom_usuario'] ;
-           $_SESSION['nombres']  = $data['nombres'] ;
+           $_SESSION['nombres']  = $data['nombres'];
+           $_SESSION['apellido']  = $data['apellido'];
            $_SESSION['rol']  = $data['Rol'] ;
+           if($_SESSION['rol']==3){
+            $dataCli = $this->model->getCliente( $_SESSION['nombres'] );
+            if($dataCli){
+               $_SESSION['id_cli']  = $dataCli['id'];
+               $_SESSION['ci']  = $dataCli['ci'];
+               $_SESSION['telefono']  = $dataCli['telefono'];
+               $_SESSION['direccion']  = $dataCli['direccion'];
+            }else{
+               $_SESSION['id_cli']  = '';
+               $_SESSION['ci']  = '';
+               $_SESSION['telefono']  = '';
+               $_SESSION['direccion']  = '';
+            }
+           }
            $_SESSION['activo']  = true ;
       } else{
          $msg = "Usuario o contraseña incorrecta";

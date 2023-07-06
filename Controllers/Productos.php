@@ -44,6 +44,7 @@ public function registrar()
    $nombre = $_POST['nombre'];
    $descripcion = $_POST['descripcion'];
    $precio = $_POST['precio'];
+   $stock = $_POST['stock'];
    $disponibilidad = $_POST['disponibilidad'];
    $estado = $_POST['estado'];
    $categoria = $_POST['categoria'];
@@ -53,11 +54,11 @@ public function registrar()
    }else{//revisar validacion
       if(!preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $nombre) || !preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $descripcion) ){
          $msg = "letras";
-      }else if ( !preg_match("/^[0-9]+([.][0-9]+)?$/", $precio) ) {
+      }else if ( !preg_match("/^[0-9]+([.][0-9]+)?$/", $precio) || !preg_match("/^[[:digit:]]+$/", $stock) ) {
          $msg = "numeros";
       }else{
          if($id ==""){
-            $data = $this->model->registrarProductos($nombre, $descripcion,$precio,$disponibilidad,$estado, $categoria );
+            $data = $this->model->registrarProductos($nombre, $descripcion,$precio,$stock, $disponibilidad,$estado, $categoria );
             if($data == "ok"){
                $msg = "si";
       
@@ -67,7 +68,7 @@ public function registrar()
                $msg = "Error al registrar producto";
             }
          }else{
-            $data = $this->model->modificarProducto($nombre, $descripcion,$precio, $disponibilidad,  $estado, $categoria,$id );
+            $data = $this->model->modificarProducto($nombre, $descripcion,$precio, $stock, $disponibilidad,  $estado, $categoria,$id );
             if($data == "modificado"){
                $msg = "modificado";
       

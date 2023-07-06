@@ -35,6 +35,18 @@ class Administracion extends Controller {
         echo json_encode($msg);
         die();
     }
+    public function sortear()
+    {
+        $data = $this->model->sorteo();
+        if($data){
+            $msg = array('msg' =>'Cilente ganador:'.$data['nombre_ganador'].' con Ci: '.$data['carnet_ganador'], 'icono' => 'success');;  
+        } else{
+            $msg = array('msg' => 'Error al sortear', 'icono' => 'error');
+        }
+        echo json_encode($msg);
+        die();
+    }
+
     /*public function obtenerHoraFin($id)
     {
         $data = $this->model->getHoraFin($id);

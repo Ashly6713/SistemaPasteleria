@@ -93,7 +93,7 @@
                             <option value="<?php echo 0;?>">Inactivo</option>
                         </select>
                     </div>
-                    <div class="alert alert-danger text-center d-none" id="alertaL" role="alert">Los campos de Nombre y Codigo sólo admiten Letras</div>
+                    <div class="alert alert-danger text-center d-none" id="alertaL" role="alert">Los campos de Nombre y Descripcion sólo admiten Letras</div>
                    <button class="btn btn-primary" type="button" onclick="registrarCategoria(event);" id="btnAccion">Registrar</button>
                    <button class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
                 </form>

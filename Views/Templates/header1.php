@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,18 +6,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Sauna Minerva</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" /> 
-        <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+        <title>Menu principal</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="<?php echo base_url; ?>Assets/css/styles.css" rel="stylesheet" />
-       <!-- <link href="<?php echo base_url; ?>Assets/DataTables/datatables.min.css" rel="stylesheet" /> -->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="<?php echo base_url; ?>Assets/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed bg-primary bg-opacity-10" >
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
            <h1> <a class="navbar-brand ps-3 bs-border-color" href="index.html"> <FONT SIZE="+2">Sauna Minerva  </FONT>    
-                <img src="dinosaur-removebg.png" width="50" height="50"></a></h1>
+                <img src="../dinosaur-removebg.png" width="50" height="50"></a></h1>
             
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
@@ -28,7 +25,7 @@
                     <a class="nav-link" href="<?php echo base_url; ?>Administracion/Home">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?php echo $_SESSION['nom_usuario']?></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i><?php echo $_SESSION['nom_usuario'] ?></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#cambiarPass">Perfil</a></li>
                         <li><hr class="dropdown-divider" /></li>
@@ -41,7 +38,7 @@
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark bg-dark " id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
-                     <div class="nav">
+                        <div class="nav">
                             <?php if($_SESSION['rol'] == 1) {?>
                             <a class="nav-link" href="<?php echo base_url; ?>Administracion">
                                 <div class="sb-nav-link-icon text-white"><h5><i class="fas fa-building"></i></h5></div>
@@ -87,6 +84,7 @@
                     </div>
                 </nav>
             </div>
+
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid mt-2">
+                    <div class="container-fluid mt-2"> 

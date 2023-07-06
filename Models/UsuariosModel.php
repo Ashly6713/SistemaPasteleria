@@ -10,6 +10,12 @@ public function getUsuario(string $usuario, string $clave)
     $data = $this->select($sql);
     return $data;
 }
+public function getCliente(string $nombre)
+{
+    $sql = "SELECT * FROM cliente WHERE nombre = '$nombre'";
+    $data = $this->select($sql);
+    return $data;
+}
 public function getUsuarios()
 {
     $sql = "SELECT * FROM usuario";

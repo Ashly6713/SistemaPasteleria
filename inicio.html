@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>PASTELERIA PEPITA</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header>
+			<div class="container-hero">
+				<div class="container hero">
+					<div class="customer-support">
+						<i class="fa-solid fa-headset"></i>
+						<div class="content-customer-support">
+							<span class="text">Soporte al cliente</span>
+							<span class="number">800-10-10</span>
+						</div>
+					</div>
+
+					<div class="container-logo">
+						<i class="fas fa-birthday-cake"></i>
+						<h1 class="logo"><a href="/">PASTELERIA PEPITA</a></h1>
+					</div>
+
+
+
+					<div class="container-user">
+						<span class="login" onclick="window.location.href='index.php'">
+						<span class="text">INICIAR SESION</span>
+						<i class="fa-solid fa-user"></i>
+						</span>
+						<i class="fa-solid fa-basket-shopping"></i>
+						<div class="content-shopping-cart">
+							<span class="login" onclick="window.location.href='../Models/ReservasModel.php'">
+								
+							<span class="text">CARRITO</span>
+							<span class="number">(0)</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="container-navbar">
+				<nav class="navbar container">
+					<i class="fa-solid fa-bars"></i>
+					<ul class="menu">
+						<li><a href="#">Inicio</a></li>
+						<li><a href="#">Tortas</a></li>
+						<li><a href="#">Cupcakes</a></li>
+						<li><a href="#">Galletas</a></li>
+						<li><a href="#">Más</a></li>
+						<li><a href="#">Blog</a></li>
+					</ul>
+
+					<form class="search-form">
+						<input type="search" placeholder="Buscar..." />
+						<button class="btn-search">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</form>
+				</nav>
+			</div>
+		</header>
+
+		<section class="banner">
+			<div class="content-banner">
+				<p>LAS MAS DELICIOSAS TORTAS</p>
+				<h2>Sabores que te transportarán a un mundo de dulzura<br /></h2>
+				<a href="Views\Productos\index.php">VER PRODUCTOS</a>
+			</div>
+		</section>
+
+		<main class="main-content">
+			<section class="container container-features">
+				<div class="card-feature">
+					
+					<i class="fas fa-motorcycle"></i>
+
+					<div class="feature-content">
+						<span>Envío gratuito</span>
+						<p>En pedido superior a 150 Bs.</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-wallet"></i>
+					<div class="feature-content">
+						<span>Contrareembolso</span>
+						<p>100% garantía de devolución de dinero</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-gift"></i>
+					<div class="feature-content">
+						<span>Tarjeta regalo especial</span>
+						<p>Ofrece bonos especiales con regalo</p>
+					</div>
+				</div>
+				<div class="card-feature">
+					<i class="fa-solid fa-headset"></i>
+					<div class="feature-content">
+						<span>Servicio al cliente 24/7</span>
+						<p>LLámenos 69596315</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="container top-categories">
+				<h1 class="heading-1">Mejores Categorías</h1>
+				<div class="container-categories">
+					<div class="card-category category-moca">
+						<p>Tortas Tematicas</p>
+						<span>Ver más</span>
+					</div>
+					<div class="card-category category-expreso">
+						<p>Panes Artesanales</p>
+						<span>Ver más</span>
+					</div>
+					<div class="card-category category-capuchino">
+						<p>Cupcakes</p>
+						<span>Ver más</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="container top-products">
+				<h1 class="heading-1">Mejores Productos</h1>
+
+				<div class="container-options">
+					<span class="active">Destacados</span>
+					<span>Más recientes</span>
+					<span>Mejores Vendidos</span>
+				</div>
+
+				<div class="container-products">
+					<!-- Producto 1 -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="img/cafe-irish.jpg" alt="Cafe Irish" />
+							<span class="discount">-13%</span>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Torta de Moca</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">152 Bs. <span>170 Bs</span></p>
+						</div>
+					</div>
+					<!-- Producto 2 -->
+					<div class="card-product">
+						<div class="container-img">
+							<img
+								src="img/cafe-ingles.jpg"
+								alt="Cafe incafe-ingles.jpg"
+							/>
+							<span class="discount">-22%</span>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Cupcake de Fresa</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">8 Bs. <span>13 Bs</span></p>
+						</div>
+					</div>
+					<!--  -->
+					<div class="card-product">
+						<div class="container-img">
+							<img
+								src="img/cafe-australiano.jpg"
+								alt="Cafe Australiano"
+							/>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+							</div>
+							<h3>Torta Tres Leches</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">140 Bs.</p>
+						</div>
+					</div>
+					<!--  -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="img/cafe-helado.jpg" alt="Cafe Helado" />
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Pan Frances</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">29 Bs.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="gallery">
+				<img
+					src="img/10-MAR-BRAHMAN-01-2.jpg"
+					alt="Gallery Img1"
+					class="gallery-img-1"
+				/><img
+					src="img/15_10_28_Industria_panaderia_variedad.jpg"
+					alt="Gallery Img2"
+					class="gallery-img-2"
+				/><img
+					src="img/abrir-un-negocio-de-pasteleria.jpg"
+					alt="Gallery Img3"
+					class="gallery-img-3"
+				/><img
+					src="img/pasteleria-lider-en-ventas-1.png"
+					alt="Gallery Img4"
+					class="gallery-img-4"
+				/><img
+					src="img/destacado-tips-pasteleria-parte1-escuela-nova.jpg"
+					alt="Gallery Img5"
+					class="gallery-img-5"
+				/>
+			</section>
+
+			<section class="container specials">
+				<h1 class="heading-1">Especiales</h1>
+
+				<div class="container-products">
+					<!-- Producto 1 -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="img/IMG_20190401_201124.jpg" alt="Cafe Irish" />
+							<span class="discount">-13%</span>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Torta Tematica</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">173 Bs. </p>
+						</div>
+					</div>
+					<!-- Producto 2 -->
+					<div class="card-product">
+						<div class="container-img">
+							<img
+								src="img/111270903-mesa-de-fiesta-de-cumpleaños-de-niña-con-pastel-de-unicornio-cupcakes-y-galletas-de-azúcar.webp"
+								alt="Cafe incafe-ingles.jpg"
+							/>
+							<span class="discount">-22%</span>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Paquete Cumpleañero</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">$355 Bs. <span>400 Bs.</span></p>
+						</div>
+					</div>
+					<!--  -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="img/fd931dca-1d3a-446f-a782-c9c002ae6f28_10_148135-167571453087952.jpeg" alt="Cafe Viena" />
+							<span class="discount">-30%</span>
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+							</div>
+							<h3>Paquete Boda</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">2930 Bs. <span>3500 Bs.</span></p>
+						</div>
+					</div>
+					<!--  -->
+					<div class="card-product">
+						<div class="container-img">
+							<img src="img/gender-party-mesa-de-postres.jpg" alt="Cafe Liqueurs" />
+							<div class="button-group">
+								<span>
+									<i class="fa-regular fa-eye"></i>
+								</span>
+								<span>
+									<i class="fa-regular fa-heart"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-code-compare"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-card-product">
+							<div class="stars">
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-solid fa-star"></i>
+								<i class="fa-regular fa-star"></i>
+							</div>
+							<h3>Paquete Baby Shower</h3>
+							<span class="add-cart">
+								<i class="fa-solid fa-basket-shopping"></i>
+							</span>
+							<p class="price">$469 Bs.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="container blogs">
+				<h1 class="heading-1">Últimos Blogs</h1>
+
+				<div class="container-blogs">
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="img/moca-category.jpg" alt="Imagen Blog 1" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>TORTAS TEMATICAS</h3>
+							<span>GOLD</span>
+							<p>
+								Imagina una torta con el tema de tu película favorita o el personaje de un cuento de hadas. 
+								Desde tortas de superhéroes hasta tortas de princesas encantadoras, nuestra pastelería está 
+								llena de opciones emocionantes. Nuestros pasteleros son verdaderos artistas, capaces de transformar cualquier idea en una torta temática impresionante y deliciosa.
+							</p>
+							<div class="btn-read-more">Leer más</div>
+						</div>
+					</div>
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="img/fd931dca-1d3a-446f-a782-c9c002ae6f28_10_148135-167571453087952.jpeg" alt="Imagen Blog 2" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>PAQUETE BODA</h3>
+							<span>SWEAT DREAM</span>
+							<p>
+								El paquete de bodas de "Pepita" comienza con una consulta personalizada, donde podrás compartir tus ideas, temáticas y preferencias para tu boda. El talentoso equipo de "Pepita" escuchará atentamente tus sueños y trabajará contigo para crear un diseño de pastel único y personalizado que refleje tu amor y estilo.
+								Contamos con una variedad de paquetes para la su eleccion y comodidad de su economia.
+							</p>
+							<div class="btn-read-more">Leer más</div>
+						</div>
+					</div>
+					<div class="card-blog">
+						<div class="container-img">
+							<img src="img/gender-party-mesa-de-postres.jpg" alt="Imagen Blog 3" />
+							<div class="button-group-blog">
+								<span>
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</span>
+								<span>
+									<i class="fa-solid fa-link"></i>
+								</span>
+							</div>
+						</div>
+						<div class="content-blog">
+							<h3>PAQUETE BABY SHOWER</h3>
+							<span>PREMIUM</span>
+							<p>
+								En la pastelería Pepita, ofrecemos un paquete especial para Baby Showers que hará de este momento una experiencia dulce e inolvidable. Trabajaremos contigo para diseñar un pastel personalizado, con una amplia variedad de sabores deliciosos para elegir. Además, ofrecemos opciones adicionales como cupcakes y galletas decoradas para complementar tu mesa de postres.
+							</p>
+							<div class="btn-read-more">Leer más</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="footer">
+			<div class="container container-footer">
+				<div class="menu-footer">
+					<div class="contact-info">
+						<p class="title-footer">Información de Contacto</p>
+						<ul>
+							<li>
+								Dirección: Calle Adolfo Mier y Pagador
+							</li>
+							<li>Teléfono: 70415461</li>
+							<li>Fax: 55555300</li>
+							<li>EmaiL: pasteleria_pepita@hotmail.com</li>
+						</ul>
+						<div class="social-icons">
+							<span class="facebook">
+								<i class="fa-brands fa-facebook-f"></i>
+							</span>
+							<span class="twitter">
+								<i class="fa-brands fa-twitter"></i>
+							</span>
+							<span class="instagram">
+								<i class="fa-brands fa-instagram"></i>
+							</span>
+						</div>
+					</div>
+
+					<div class="information">
+						<p class="title-footer">Información</p>
+						<ul>
+							<li><a href="#">Acerca de Nosotros</a></li>
+							<li><a href="#">Información Delivery</a></li>
+							<li><a href="#">Politicas de Privacidad</a></li>
+							<li><a href="#">Términos y condiciones</a></li>
+							<li><a href="#">Contactános</a></li>
+						</ul>
+					</div>
+
+					<div class="my-account">
+						<p class="title-footer">Mi cuenta</p>
+
+						<ul>
+							<li><a href="#">Mi cuenta</a></li>
+							<li><a href="#">Historial de ordenes</a></li>
+							<li><a href="#">Lista de deseos</a></li>
+							<li><a href="#">Boletín</a></li>
+							<li><a href="#">Reembolsos</a></li>
+						</ul>
+					</div>
+
+					<div class="newsletter">
+						<p class="title-footer">Boletín informativo</p>
+
+						<div class="content">
+							<p>
+								Suscríbete a nuestros boletines ahora y mantente al
+								día con nuevos productos y ofertas exclusivas.
+							</p>
+							<input type="email" placeholder="Ingresa el correo aquí...">
+							<button>CREA TU CUENTA</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="copyright">
+					<p>
+						Desarrollado por Katherine & Morelia &copy; 2023
+					</p>
+
+					<img src="img/payment.png" alt="Pagos">
+				</div>
+			</div>
+		</footer>
+
+		<script
+			src="https://kit.fontawesome.com/81581fb069.js"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

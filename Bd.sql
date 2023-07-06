@@ -28,6 +28,7 @@ CREATE TABLE producto(
   nombre VARCHAR(255) NOT NULL,
   descripcion VARCHAR(255) NOT NULL,
   precio DECIMAL(10, 2) NOT NULL,
+  stock INT NOT NULL,
   disponibilidad BOOLEAN NOT NULL,
   estado BOOLEAN NOT NULL,
   categoria_id INT NOT NULL,
@@ -40,6 +41,7 @@ CREATE TABLE cliente (
   nombre VARCHAR(50) NOT NULL,
   apellido VARCHAR(50) NOT NULL,
   telefono VARCHAR(20) NOT NULL,
+  direccion VARCHAR(50) NOT NULL,
   estado BOOLEAN NOT NULL,
   PRIMARY KEY (id)
 );
@@ -63,9 +65,9 @@ CREATE TABLE detalle_venta (
   cantidad INT NOT NULL,
   sub_total DECIMAL(10, 2) NOT NULL,
   producto_id INT NOT NULL,
-  reserva_id INT NOT NULL,
+  vanta_id INT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (reserva_id) REFERENCES venta(id),
+  FOREIGN KEY (vanta_id) REFERENCES venta(id),
   FOREIGN KEY (producto_id) REFERENCES producto(id)
 );
 CREATE TABLE detalle (

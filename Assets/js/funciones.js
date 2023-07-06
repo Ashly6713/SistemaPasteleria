@@ -134,6 +134,9 @@ document.addEventListener("DOMContentLoaded", function(){
           'data' : 'precio'
       },
       {
+        'data' : 'stock'
+      },
+      {
           'data' : 'disponibilidad'
       },
       {
@@ -198,6 +201,9 @@ document.addEventListener("DOMContentLoaded", function(){
         'data' : 'telefono'
     },
     {
+      'data' : 'direccion'
+    },
+    {
         'data' : 'estado'
     },
     {
@@ -236,7 +242,7 @@ document.addEventListener("DOMContentLoaded", function(){
    //fin Clientes
     $('#t_historial_r').DataTable( {
      ajax: {
-         url: base_url + "Reservas/listar_reservas",
+         url: base_url + "Ventas/listar_Ventas",
          dataSrc: ''
      },
      columns: [ {
@@ -303,8 +309,9 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 function frmLogin(e) {
   e.preventDefault();
-  const usuario = document.getElementById("usuario");
-  const clave = document.getElementById("clave");
+  const usuario = document.getElementById("usuarioL");
+  const clave = document.getElementById("claveL");
+  console.log(usuario);
   if (usuario.value == "") {
       clave.classList.remove("is-invalid");
       usuario.classList.add("is-invalid");
@@ -363,6 +370,15 @@ function frmCambiarPass(e){
   }
 }
 
+function frmNuevoCliente() {
+  document.getElementById("title").innerHTML = "Nuevo Usuario";
+  document.getElementById("btnAccion").innerHTML = "Registrar";
+  document.getElementById("claves").classList.remove("d-none");
+  document.getElementById("frmUsuarios").reset();
+  $("#registro_cliente").modal("show");
+  document.getElementById("id").value = "";
+}
+
 function frmUsuario() {
     document.getElementById("title").innerHTML = "Nuevo Usuario";
     document.getElementById("btnAccion").innerHTML = "Registrar";
@@ -370,6 +386,42 @@ function frmUsuario() {
     document.getElementById("frmUsuarios").reset();
     $("#nuevo_usuario").modal("show");
     document.getElementById("id").value = "";
+}
+function registrarUserCli(e) {
+  e.preventDefault();
+document.getElementById("alertaU").classList.add("d-none");
+document.getElementById("alertaC").classList.add("d-none");
+document.getElementById("alertaL").classList.add("d-none");
+  const usuario = document.getElementById("usuario");
+  const nombre = document.getElementById("nombre");
+  const apellido = document.getElementById("apellido");
+  const correo= document.getElementById("correo");
+  const rol = document.getElementById("rol");
+  const estado = document.getElementById("estado");
+  if (usuario.value == "" || nombre.value == ""|| apellido.value == "" || correo.value == ""  || rol.value == "" || estado.value == "") {
+      alertas('Todos los campos son obligatorios', 'warning');
+  } else{
+      const url = base_url + "Usuarios/registrar";
+      const frm = document.getElementById("frmUsuarios");
+      const http = new XMLHttpRequest();
+      http.open("POST", url, true);
+      http.send(new FormData(frm));
+      http.onreadystatechange = function(){
+          if (this.readyState == 4 && this.status == 200) {
+              const res= JSON.parse(this.responseText);
+              if(res == "usuario"){
+                document.getElementById("alertaU").classList.remove("d-none");
+              } else if(res == "letras"){
+                document.getElementById("alertaL").classList.remove("d-none");
+              } else if(res == "correo"){
+                document.getElementById("alertaC").classList.remove("d-none");
+              }else{alertas(res.msg, res.icono);
+                $("#registro_cliente").modal("hide");}
+              
+          }
+      }
+  }
+
 }
 function registrarUser(e) {
     e.preventDefault();
@@ -984,6 +1036,7 @@ function registrarCliente(e) {
   const nombre = document.getElementById("nombre");
   const apellido = document.getElementById("apellido");
   const telefono= document.getElementById("telefono");
+  const direccion= document.getElementById("direccion");
   const estado = document.getElementById("estado");
   if (ci.value == ""||nombre.value == ""|| apellido.value == "" || telefono.value == ""  || estado.value == "") {
       Swal.fire({
@@ -1010,6 +1063,7 @@ function registrarCliente(e) {
                   showConfirmButton: false,
                   timer: 3000
                 })
+                window.location.href = base_url + "Usuarios/salir";
                 frm.reset();
                 $("#nuevo_cliente").modal("hide");
                 tblClientes.ajax.reload();
@@ -1021,6 +1075,7 @@ function registrarCliente(e) {
                       showConfirmButton: false,
                       timer: 3000
                     })
+                    window.location.href = base_url + "Usuarios/salir";
                     $("#nuevo_cliente").modal("hide");
                     tblClientes.ajax.reload();
               }else{
@@ -1066,6 +1121,7 @@ function btnEditarCliente(id){
             document.getElementById("nombre").value = res.nombre;
             document.getElementById("apellido").value = res.apellido;
             document.getElementById("telefono").value = res.telefono;
+            document.getElementById("direccion").value = res.direccion;
             document.getElementById("estado").value = res.estado;
             $("#nuevo_cliente").modal("show");
           }
@@ -1235,11 +1291,11 @@ function saltar(e,id)
 
 function buscarCi(e){
   e.preventDefault();
-  const num = document.getElementById("ci").value;
+  const num = document.getElementById("ciV").value;
    if(num != '' ){
     if(e.which == 13){
-      const ci = document.getElementById("ci").value;
-      const url = base_url + "Reservas/buscarCi/"+ci;
+      const ci = document.getElementById("ciV").value;
+      const url = base_url + "Ventas/buscarCi/"+ci;
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -1252,13 +1308,14 @@ function buscarCi(e){
             document.getElementById("categoria").removeAttribute('disabled');
             document.getElementById("categoria").focus();
             } else {
-            document.getElementById("numero").removeAttribute('disabled');
-            document.getElementById("numero").focus();
+            document.getElementById("add").removeAttribute('disabled');
+            document.getElementById("add").focus();
             }
-            document.getElementById("nombre").value = res.nombre;
-            document.getElementById("apellido").value = res.apellido;
+            document.getElementById("nombreV").value = res.nombre;
+            document.getElementById("apellidoV").value = res.apellido;
             document.getElementById("id_cli").value = res.id;
-            document.getElementById("telefono").value = res.telefono;
+            document.getElementById("telefonoV").value = res.telefono;
+            document.getElementById("direccionV").value = res.direccion;
           } else {
             alertas('El cliente no existe', 'warning');
             document.getElementById("ci").value = '';
@@ -1267,6 +1324,7 @@ function buscarCi(e){
             document.getElementById("apellido").value = '';
             document.getElementById("id_cli").value = '';
             document.getElementById("telefono").value = '';
+            document.getElementById("direccion").value = '';
           }
         }
       }
@@ -1275,170 +1333,137 @@ function buscarCi(e){
     alertas('Ingrese el C.I.', 'warning');
   }
 }
-function buscarNumero(e){
+function buscarProducto(e){
   e.preventDefault();
-  const num = document.getElementById("numero").value;
+  const num = document.getElementById("producto").value;
    if(num != '' ){
-      const num = document.getElementById("numero").value;
-      const url = base_url + "Reservas/buscarNumero/"+num;
+      const num = document.getElementById("producto").value;
+      const url = base_url + "Ventas/buscarProducto/"+num;
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
       http.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-          console.log(num);
           const res = JSON.parse(this.responseText);
-          if(res){
-            document.getElementById("precio_hora").value = res.precio_hora;
-            document.getElementById("id").value = res.id;
-            ingresar();
-            var options = document.querySelectorAll('#numero option');
-            options.forEach(o => o.remove());
-          } else {
-            alertas('El producto no existe', 'warning');
-            document.getElementById("numero").value = '';
-            document.getElementById("numero").focus();
-          }
+            document.getElementById("descripcion").value = res.descripcion;
+            document.getElementById("precio_unidad").value = res.precio_unidad;
+            document.getElementById("stock").value = res.stock;
+            document.getElementById("id_pro").value = res.id;
+            /*var options = document.querySelectorAll('#producto option');
+            options.forEach(o => o.remove());*/
+            document.getElementById("cantidad").removeAttribute('disabled');
+            document.getElementById("cantidad").focus();
         }
       }
   } else{
-    alertas('Ingrese el número', 'warning');
+    alertas('Ingrese el prdocto', 'warning');
+  }
+}
+function seleccionarProducto(num){
+   if(num != '' ){
+      const url = base_url + "Ventas/buscarProducto/"+num;
+      const http = new XMLHttpRequest();
+      http.open("GET", url, true);
+      http.send();
+      http.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200) {
+          const res = JSON.parse(this.responseText);
+            document.getElementById("descripcion").value = res.descripcion;
+            document.getElementById("precio_unidad").value = res.precio_unidad;
+            document.getElementById("stock").value = res.stock;
+            document.getElementById("id_pro").value = res.id;
+            console.log(document.getElementById("id_pro").value);
+            document.getElementById("producto").value = num;
+            document.getElementById("cantidad").removeAttribute('disabled');
+            document.getElementById("cantidad").focus();
+        }
+      }
+  } else{
+    alertas('Ingrese el prdocto', 'warning');
   }
 }
 
-function restarHoras(hora1, hora2) {
-  var partesHora1 = hora1.split(":");
-  var partesHora2 = hora2.split(":");
 
-  var horas1 = parseInt(partesHora1[0]);
-  var minutos1 = parseInt(partesHora1[1]);
-
-  var horas2 = parseInt(partesHora2[0]);
-  var minutos2 = parseInt(partesHora2[1]);
-
-  // Convertir todo a minutos
-  var totalMinutos1 = horas1 * 60 + minutos1;
-  var totalMinutos2 = horas2 * 60 + minutos2;
-
-  // Restar los minutos
-  var diferenciaMinutos = totalMinutos1 - totalMinutos2;
-
-  return diferenciaMinutos;
-}
-function calcularHoras(e){
+function calcularPrecTotal(e){
   e.preventDefault();
-  const hrIn = document.getElementById("hora_inicio").value;
-  const ci = document.getElementById("ci").value;
-  const cant = document.getElementById("cantidad").value;
-  document.getElementById("hora_fin").value =  hrIn;
-  document.getElementById("hora_fin").stepUp(cant);
-  const hrFin = document.getElementById("hora_fin").value;
-  var cant2 = restarHoras(hrFin, hrIn);
+  const stock = document.getElementById("stock").value;
   if(e.which == 13){
-    if(cant2<cant){ 
-      alertas('Sólo quedan '+cant2+' minutos', 'warning');
-      document.getElementById("cantidad").value = cant2;
+    const cant = document.getElementById("cantidad").value;
+    const cant2 = stock-cant;
+    if( cant2<0){ 
+      alertas('Sólo quedan '+stock+' productos', 'warning');
+      document.getElementById("cantidad").value = stock;
     }
-    if(cant > 0){
-      const url = base_url + "Reservas/disponibles";
-      const frm = document.getElementById("frmReserva");
-      const http = new XMLHttpRequest();
-      http.open("POST", url, true);
-      http.send(new FormData(frm));
-      http.onreadystatechange = function(){
-        if (this.readyState == 4 && this.status == 200) {
-          console.log(this.responseText);
-          const res = JSON.parse(this.responseText);
-          var options = document.querySelectorAll('#numero option');
-          options.forEach(o => o.remove());
-          if(res){
-            var selectElement = document.getElementById('numero');
-              option = document.createElement( 'option' );
-              option.value = '';
-              option.text = 'Seleccione';
-              selectElement.add( option );
-            res.forEach(row => {
-              option = document.createElement( 'option' );
-              option.value = row['id'];
-              option.text = row['numero'];
-              selectElement.add( option );
-          });
-              document.getElementById("precio_hora").value = res[0]['precio_hora'];
-              const precio_hora = document.getElementById("precio_hora").value;
-              var preTot =  (cant/60)*precio_hora;
-              var rPreTot = preTot.toFixed(2);
-              var decimal = rPreTot - Math.trunc(rPreTot);
-              if(decimal == 0.0 || decimal == 0.50 ){
-                document.getElementById("precio_total").value =  rPreTot;
-              }else{
-                if(decimal > 0.50 ){
-                  document.getElementById("precio_total").value = Math.trunc(rPreTot)+1;
-                } else{
-                  document.getElementById("precio_total").value = Math.trunc(rPreTot);
-                }
-              }
-              if(decimal == 0.0 || decimal == 0.50 ){
-                document.getElementById("precio_total").value =  rPreTot;
-              }else{
-                if(decimal > 0.50 ){
-                  document.getElementById("precio_total").value = Math.trunc(rPreTot)+1;
-                } else{
-                  document.getElementById("precio_total").value = Math.trunc(rPreTot);
-                }
-              }
-              
-          }else {
-            alertas('No existen productos diponibles', 'warning');
-            document.getElementById("hora_inicio").focus();
-            document.getElementById("numero").value = '';
+      if(cant > 0){
+        const cant = document.getElementById("cantidad").value;
+        const precio_unidad = document.getElementById("precio_unidad").value;
+        var preTot =  cant*precio_unidad;
+        var rPreTot = preTot.toFixed(2);
+        var decimal = rPreTot - Math.trunc(rPreTot);
+          if(decimal == 0.0 || decimal == 0.50 ){
+            document.getElementById("precio_total").value =  rPreTot;
+          }else{
+            if(decimal > 0.50 ){
+              document.getElementById("precio_total").value = Math.trunc(rPreTot)+1;
+            } else{
+              document.getElementById("precio_total").value = Math.trunc(rPreTot);
+            }
           }
-          
-        }
+          if(decimal == 0.0 || decimal == 0.50 ){
+            document.getElementById("precio_total").value =  rPreTot;
+          }else{
+            if(decimal > 0.50 ){
+              document.getElementById("precio_total").value = Math.trunc(rPreTot)+1;
+            } else{
+              document.getElementById("precio_total").value = Math.trunc(rPreTot);
+            }
+          }
+        document.getElementById("add").removeAttribute('disabled');
+        document.getElementById("add").focus();
       }
-    document.getElementById("numero").removeAttribute('disabled');
-    document.getElementById("numero").focus();
-    if(ci =='' ){
-      alertas('Ingrese un cliente', 'warning');
-      document.getElementById("ci").focus();
-    }
-  
-     }
+    
   }
 }
 function ingresar(){
-  const ci = document.getElementById("ci").value;
+  const ci = document.getElementById("ciV").value;
   const cant = document.getElementById("cantidad").value;
+  if(ci!=''){
     if(cant > 0){
-      const url = base_url + "Reservas/ingresar";
-      const frm = document.getElementById("frmReserva");
+      const url = base_url + "Ventas/ingresar";
+      const frm = document.getElementById("frmVenta");
       const http = new XMLHttpRequest();
       http.open("POST", url, true);
       http.send(new FormData(frm));
       http.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-          const res = JSON.parse(this.responseText);
+           const res = JSON.parse(this.responseText);
             alertas(res.msg, res.icono);
-            document.getElementById("numero").value = '';
+            document.getElementById("producto").value = '';
             document.getElementById("categoria").value = '';
-            document.getElementById("precio_hora").value = '';
+            document.getElementById("precio_unidad").value = '';
             document.getElementById("id").value = '';
-            document.getElementById("hora_inicio").value = '';
-            document.getElementById("hora_fin").value = '';
+            document.getElementById("descripcion").value = '';
+            document.getElementById("stock").value = '';
             document.getElementById("cantidad").value = '';
             document.getElementById("precio_total").value = '';
             cargarDetalle();
-            document.getElementById('numero').setAttribute('disabled', 'disabled');
-            document.getElementById('hora_inicio').setAttribute('disabled', 'disabled');
-          document.getElementById('cantidad').setAttribute('disabled', 'disabled');
-          document.getElementById('categoria').focus();
-          
+            document.getElementById('producto').setAttribute('disabled', 'disabled');
+            document.getElementById('descripcion').setAttribute('disabled', 'disabled');
+            document.getElementById('precio_unidad').setAttribute('disabled', 'disabled');
+            document.getElementById('stock').setAttribute('disabled', 'disabled');
+            document.getElementById('cantidad').setAttribute('disabled', 'disabled');
+            document.getElementById('categoria').focus();
         }
       }
      }
+  }else{
+    alertas('Ingrese un cliente', 'warning');
+  }
+    
 }
 //cargarDetalle();
 function cargarDetalle(){
-  const url = base_url + "Reservas/listar";
+  const url = base_url + "Ventas/listar";
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -1449,10 +1474,10 @@ function cargarDetalle(){
           res.detalle.forEach(row => {
             html += `<tr>
             <td>${row['producto_id']}</td> 
-            <td>${row['numero']}</td>
             <td>${row['nombre']}</td>
-            <td>${row['hora_inicio']}</td>
-            <td>${row['hora_fin']}</td>
+            <td>${row['descripcion']}</td>
+            <td>${row['precio']}</td>
+            <td>${row['nombre_c']}</td>
             <td>${row['cantidad']}</td>
             <td>${row['sub_total']}</td>
             <td>
@@ -1467,7 +1492,7 @@ function cargarDetalle(){
       }
 }
 function deleteDetalle(id){
-  const url = base_url + "Reservas/delete/"+id;
+  const url = base_url + "Ventas/delete/"+id;
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -1479,9 +1504,9 @@ function deleteDetalle(id){
         }
       }
 }
-function generarReserva(){
+function generarVenta(){
   Swal.fire({
-    title: 'Esta seguro de realizar Reserva?',
+    title: 'Esta seguro de registar?',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -1491,7 +1516,7 @@ function generarReserva(){
   }).then((result) => {
     const id_cliente = document.getElementById("id_cli").value ;
     if (result.isConfirmed) {
-        const url = base_url + "Reservas/registrarReserva/"+id_cliente;
+        const url = base_url + "Ventas/registrarVenta/"+id_cliente;
         const http = new XMLHttpRequest();
           http.open("GET", url, true);
           http.send();
@@ -1502,10 +1527,10 @@ function generarReserva(){
                   if(res.icono == "success"){
                     Swal.fire(
                       'Mensaje!',
-                      'Reserva generada.',
+                      'Registro generado.',
                       'success'
                     )
-                    const ruta = base_url + "Reservas/generarPdf/"+ res.id_reserva;
+                    const ruta = base_url + "Ventas/generarPdf/"+ res.id_venta;
                     window.open(ruta);
                     setTimeout(() =>{
                       window.location.reload();
@@ -1526,23 +1551,54 @@ function generarReserva(){
 
 }
 
-function cargarCu(){
+function cargarProd(){
   const categoria = document.getElementById("categoria").value;
-  const horaIn = document.getElementById("hora_inicio").value;
-  if(categoria != ""){
-  document.getElementById("hora_inicio").removeAttribute('disabled');
-  document.getElementById("hora_inicio").focus();
-  }else{
+  if(categoria == ""){
     alertas("Seleccione una categoria", "error");
+  } else {
+    document.getElementById('producto').removeAttribute('disabled');
+    document.getElementById('producto').focus();
+    const url = base_url + "Ventas/disponibles";
+    const frm = document.getElementById("frmVenta");
+    const http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+    http.onreadystatechange = function(){
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        const res = JSON.parse(this.responseText);
+        var options = document.querySelectorAll('#producto option');
+        options.forEach(o => o.remove());
+        if(res){
+          var selectElement = document.getElementById('producto');
+            option = document.createElement( 'option' );
+            option.value = '';
+            option.text = 'Seleccione';
+            selectElement.add( option );
+          res.forEach(row => {
+            option = document.createElement( 'option' );
+            option.value = row['id'];
+            option.text = row['producto'];
+            selectElement.add( option );
+        });
+        
+ var selectedValue2 = localStorage.getItem("selectedValue2");
+ if( selectedValue2 > 0){
+  seleccionarProducto(selectedValue2);
+}
+       }else {
+          alertas('No existen productos diponibles', 'warning');
+          document.getElementById("categoria").focus();
+          document.getElementById("categoria").value = '';
+        }
+        
+      }    
+    }
   }
-  const hora_inicio = document.getElementById("hora_inicio").value;
-  const hora_fin = document.getElementById("hora_fin").value;
-  if(categoria != "" && hora_inicio != "" && hora_fin != ""){
-    document.getElementById("cantidad").focus();
-  }
+  
 }
 
-//fin Reservas
+//fin Ventas
 
 function alertas(mensaje, icono){
   Swal.fire({
@@ -1560,7 +1616,7 @@ function alertas(mensaje, icono){
 //actualizarNo();
 //actualizar No disponibles
 function actualizarNo(){
-  const url = base_url + "Reservas/actualizarNo";
+  const url = base_url + "Ventas/actualizarNo";
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -1572,7 +1628,7 @@ function actualizarNo(){
 }
 //actualizar
 function actualizar(){
-  const url = base_url + "Reservas/actualizar";
+  const url = base_url + "Ventas/actualizar";
       const http = new XMLHttpRequest();
       http.open("GET", url, true);
       http.send();
@@ -1608,7 +1664,7 @@ function HoraFin(e, cuarto_id){
       }
 }
 //Reporte grafico
-if (document.getElementById('masReservado')){
+if (document.getElementById('masVendido')){
   reporteVendidos();
 }
 
@@ -1624,9 +1680,9 @@ function reporteVendidos(){
           let cantidad = [];
          for(let i = 0; i< res.length; i++){
            nombre.push('Nro.:'+res[i]['numero']);
-           cantidad.push(res[i]['veces_reservado']) ;
+           cantidad.push(res[i]['veces_vendido']) ;
          }
-         var ctx = document.getElementById("masReservado");
+         var ctx = document.getElementById("masVendido");
           var myPieChart = new Chart(ctx, {
             type: 'pie',
             data: {
@@ -1796,5 +1852,18 @@ function validarHora() {
   if (horaIngresada < horaActual) {
     alert("La hora ingresada no puede ser menor a la hora actual.");
     inputHora.value = horaActual;
+  }
+}
+
+function funSor() {
+  const url = base_url + "Administracion/sortear";
+  const http = new XMLHttpRequest();
+  http.open("POST", url, true);
+  http.send();
+  http.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+         const res = JSON.parse(this.responseText);
+         alertas(res.msg, res.icono);
+      }
   }
 }

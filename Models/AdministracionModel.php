@@ -9,6 +9,12 @@ public function getEmpresa()
     $data = $this->select($sql);
     return $data;
 }
+public function sorteo()
+{
+    $sql = "SELECT c.nombre AS nombre_ganador, c.ci AS carnet_ganador FROM venta v JOIN cliente c ON v.cliente_id = c.id WHERE c.estado = true AND v.fecha_compra >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY RAND() LIMIT 1;";
+    $data = $this->select($sql);
+    return $data;
+}
 public function modificar(string $nit,string $nombre, string $telefono, string $dir, string $mensaje, int $id)
 {
         $sql = "UPDATE configuracion SET nit = ?,nombre = ?, telefono = ?, direccion = ?, mensaje = ? WHERE id=?";

@@ -38,6 +38,7 @@ public function registrar()
    $nombre = $_POST['nombre'];
    $apellido = $_POST['apellido'];
    $telefono = $_POST['telefono'];
+   $direccion = $_POST['direccion'];
    $estado = $_POST['estado'];
    $id = $_POST['id'];
    if(empty($ci)||empty($nombre)|| empty($apellido)|| empty($telefono) ){
@@ -45,14 +46,14 @@ public function registrar()
    }else{
       if( !preg_match("/^[[:digit:]]+$/", $ci)){
          $msg = "ci";
-      }else if(!preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $nombre) || !preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $apellido) ){
+      }else if(!preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $nombre) || !preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $apellido) || !preg_match("/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/", $direccion) ){
          $msg = "letras";
       }else if ( !preg_match("/^(\d{8})$/", $telefono)) {
          $msg = "numeros";
       }else{
-         if($id == "")
+      if($id == "")
       {  
-         $data = $this->model->registrarCliente($ci, $nombre, $apellido, $telefono, $estado );
+         $data = $this->model->registrarCliente($ci, $nombre, $apellido, $telefono, $direccion,  $estado );
          if($data == "ok"){
             $msg = "si";
    
@@ -63,7 +64,7 @@ public function registrar()
          }
         
       }else{
-         $data = $this->model->modificarCliente( $ci, $nombre, $apellido, $telefono, $estado, $id );
+         $data = $this->model->modificarCliente( $ci, $nombre, $apellido, $telefono, $direccion,  $estado, $id );
          if($data == "modificado"){
             $msg = "modificado";
    

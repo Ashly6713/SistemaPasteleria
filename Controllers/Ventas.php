@@ -1,5 +1,5 @@
 <?php 
-class Reservas extends Controller {
+class Ventas extends Controller {
     public function __construct()
     {
         session_start();
@@ -22,28 +22,26 @@ class Reservas extends Controller {
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function buscarNumero($id)
+    public function buscarProducto($id)
     {
-        $data = $this->model->getCuNum($id);
+        $data = $this->model->getProd($id);
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
     public function ingresar()
     {
         date_default_timezone_set('America/La_Paz');
-        $id = $_POST['id'];
+        $id = $_POST['id_pro'];
         $cliente_id = $_POST['id_cli'];
-        $datos = $this->model->getCuartos($id);
-        $precio = $datos['precio_hora'];
-        $hora_inicio = $_POST['hora_inicio'];
+        $datos = $this->model->getProductos($id); 
+        $precio = $datos['precio'];
         $cantidad = $_POST['cantidad'];
-        $hora_fin = date('H:i',strtotime ( '+'.$cantidad.' minute' , strtotime ($hora_inicio) )) ;
-        $cuarto_id = $datos['id'];
+        $producto_id = $datos['id'];
         $usuario_id = $_SESSION['id'];
          
-         $comprobar = $this->model->consultarDetalle($cuarto_id, $usuario_id);
+         $comprobar = $this->model->consultarDetalle($producto_id, $usuario_id);
          //calcular total
-         $preTot =  ($cantidad/60)*$precio;
+         $preTot =  $cantidad*$precio;
          $rPreTot = round($preTot,2);
          $decimal = $rPreTot - floor($rPreTot);
          if($decimal == 0.0 || $decimal == 0.50 ){
@@ -57,19 +55,19 @@ class Reservas extends Controller {
          }
          //fin
          if(empty($comprobar)){
-                $data = $this->model->registrarDetalle($precio, $hora_inicio, $hora_fin, $cantidad, $sub_total, $cliente_id, $cuarto_id, $usuario_id);
-                if($data == 'ok'){
-                    $msg = array('msg'=>'Cuarto ingresado a la reserva', 'icono'=> 'success');
-                } else{
-                    $msg = array('msg'=>'Error al ingresar cuarto a la reserva', 'icono'=> 'error');
-                }
+            $data = $this->model->registrarDetalle($precio, $cantidad, $sub_total, $cliente_id, $producto_id, $usuario_id);
+            if($data == 'ok'){
+                $msg = array('msg'=>'Producto ingresado a la venta', 'icono'=> 'success');
+            } else{
+                $msg = array('msg'=>'Error al ingresar producto a la venta', 'icono'=> 'error');
+            }
          } else {
-            $data = $this->model->actualizarDetalle($precio, $hora_inicio, $hora_fin, $cantidad, $sub_total, $cliente_id, $cuarto_id, $usuario_id);
-                if($data == 'modificado'){
-                    $msg = array('msg'=>'Registro de cuarto modificado', 'icono'=> 'success');
-                } else{
-                    $msg = array('msg'=>'Error al modificar', 'icono'=> 'error');
-                }
+            $data = $this->model->actualizarDetalle($precio, $cantidad, $sub_total, $cliente_id, $producto_id, $usuario_id);
+            if($data == 'modificado'){
+                $msg = array('msg'=>'Registro de producto modificado', 'icono'=> 'success');
+            } else{
+                $msg = array('msg'=>'Error al modificar', 'icono'=> 'error');
+            }
         }
        
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
@@ -77,154 +75,176 @@ class Reservas extends Controller {
     }
     public function listar()
     {
-    $id_usuario = $_SESSION['id'];
-    $data['detalle'] = $this->model->getDetalle($id_usuario);
-    $data['total_pagar'] = $this->model->calcularReserva( $id_usuario);
-    echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    die();
+        $id_usuario = $_SESSION['id'];
+        $data['detalle'] = $this->model->getDetalle($id_usuario);
+        $data['total_pagar'] = $this->model->calcularVenta( $id_usuario);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
     }
     public function delete(int $id)
     {
        $data =  $this->model->deleteDelete($id);
        if($data == 'ok'){
-            $msg = array('msg'=>'Cuarto eliminado', 'icono'=> 'success');
+            $msg = array('msg'=>'Producto eliminado', 'icono'=> 'success');
         } else{
-            $msg = array('msg'=>'Error eliminar cuarto', 'icono'=> 'error');
+            $msg = array('msg'=>'Error eliminar producto', 'icono'=> 'error');
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function registrarReserva($cliente_id){
+    public function registrarVenta($cliente_id){
         date_default_timezone_set('America/La_Paz');
         $fecha_compra = date('Y-m-d');
         $usuario_id = $_SESSION['id'];
-        $detalle= $this->model->getDetalle($usuario_id);
-       $total = $this->model->calcularReserva($usuario_id); 
-       $data = $this->model->registraReserva($fecha_compra, $total['total'], $cliente_id, $usuario_id);
+        $rol =  $_SESSION['rol'];
+        if($rol == 3){
+            $tipo = 0;
+        }else{
+            $tipo = 1;
+        }
+       $detalle= $this->model->getDetalle($usuario_id);
+       $total = $this->model->calcularVenta($usuario_id); 
+       $data = $this->model->registraVenta($fecha_compra, $total['total'], $cliente_id, $usuario_id, $tipo);
        if($data == 'ok'){
-            $reserva_id = $this->model->id_reserva();
+            $venta_id = $this->model->id_venta();
             foreach($detalle as $row){
                 $precio = $row['precio'];
-                $hora_inicio = $row['hora_inicio'];
-                $hora_fin = $row['hora_fin'];
                 $cantidad = $row['cantidad'];
                 $sub_total = $row['sub_total'];
-                $cuarto_id = $row['cuarto_id'];
-                $this->model->registrarDetalleReserva($precio, $hora_inicio, $hora_fin, $cantidad, $sub_total, $cuarto_id, $reserva_id['id']);
-               // $this->model->actualizarDisponibilidad($cuarto_id);
+                $producto_id = $row['producto_id'];
+                $data = $this->model->getProd($producto_id);
+                $stock = $data['stock'];
+                $nStock = $stock - $cantidad;
+                if($nStock == 0){
+                    $disp = 0;
+                } else {
+                    $disp = 1;
+                }
+                $this->model->registrarDetalleVenta($precio, $cantidad, $sub_total, $producto_id, $venta_id['id']);
+                $this->model->actualizarDisponibilidad($producto_id, $nStock, $disp);
             }
             $vaciar = $this->model->vaciarDetalle($usuario_id);
             if($vaciar == 'ok'){
-                $msg =  array('msg'=>'ok', 'icono'=> 'success', 'id_reserva'=> $reserva_id['id']);
+                $msg =  array('msg'=>'ok', 'icono'=> 'success', 'id_venta'=> $venta_id['id']);
             }
         } else{
-            $msg = array('msg'=>'Error al generar Reserva', 'icono'=> 'error');
+            $msg = array('msg'=>'Error al generar Venta', 'icono'=> 'error');
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     } 
-    public function listar_reservas()
+    public function listar_ventas()
     {
-        $data = $this->model->getHistorialReservas();
+        $data = $this->model->getHistorialVentas();
         for ($i = 0; $i < count($data); $i++){
             $data[$i]['acciones'] = '<div>
-            <a class="btn btn-danger" href="'. base_url."Reservas/generarPdf/".$data[$i]['id'].'" terget="_blank"><i class="fas fa-file-pdf"></i></a>
+            <a class="btn btn-danger" href="'. base_url."Ventas/generarPdf/".$data[$i]['id'].'" terget="_blank"><i class="fas fa-file-pdf"></i></a>
             </div>';
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function generarPdf($id_reserva)
+    public function generarPdf($id_venta)
     {
         $empresa = $this->model->getEmpresa();
         
-        $cuartos = $this->model->getCuReserva($id_reserva);
-        $cliente_id = $cuartos[0]['cliente_id'];
-        $cliente = $this->model->getCliReserva($cliente_id);
-        $Date= strtotime($cuartos[0]['fecha_compra']);
+        $productos = $this->model->getCuVenta($id_venta);
+        $cliente_id = $productos[0]['cliente_id'];
+        $tipo = $productos[0]['tipo'];
+        $cliente = $this->model->getCliVenta($cliente_id);
+        $Date= strtotime($productos[0]['fecha_compra']);
         $Fecha =  date("d-m-Y", $Date);
         
         require('Libraries/fpdf/fpdf.php');
         
-        $pdf = new FPDF('P','mm', array(80,100));//arra y ancho y alto
+        $pdf = new FPDF('P','mm',  'Letter');//arra y ancho y alto
         $pdf->AddPage();
-        $pdf->SetMargins(5, 0, 0);
+        $pdf->SetMargins(6, 0, 0);
         $pdf->SetTitle('Reporte Compra');
-        $pdf->SetFont('Arial','B',13);
-        $pdf->Cell(60,10, utf8_decode($empresa['nombre']), 0, 1, 'C');
-        $pdf->Image(base_url . 'Assets/img/log.png', 55, 17, 18, 19);// , tamaño, atura, 25*25 
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(11, 5, 'NIT: ', 0, 0, 'L');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(20, 5, $empresa['nit'], 0, 1, 'L');
+        $pdf->SetFont('Arial','B',16);
+        $pdf->Cell(210,10, utf8_decode($empresa['nombre']), 0, 1, 'C');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(218, 5, utf8_decode($empresa['mensaje']), 0, 1, 'C');
+        $pdf->Image(base_url . 'Assets/img/log.png', 180, 17, 25, 26);// , tamaño, atura, 25*25 
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(15, 6, 'NIT: ', 0, 0, 'L');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(25, 6, $empresa['ruc'], 0, 0, 'L');
 
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(11, 5, utf8_decode('Teléfono: '), 0, 0, 'L');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(20, 5, $empresa['telefono'], 0, 1, 'L');
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(20, 6, utf8_decode('Teléfono: '), 0, 0, 'L');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(20, 6, $empresa['telefono'], 0, 1, 'L');
         
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(11, 5, utf8_decode('Dirección: '), 0, 0, 'L');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(20, 5, $empresa['direccion'], 0, 1, 'L');
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(20, 6, utf8_decode('Dirección: '), 0, 0, 'L');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(30, 6, utf8_decode($empresa['direccion']), 0, 1, 'L');
 
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(11, 5, 'Ticket:', 0, 0, 'L');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(32, 5, $id_reserva, 0, 0, 'L');
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(11, 5, 'Fecha:', 0, 0, 'L');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(20, 5, $Fecha, 0, 1, 'L');
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(20, 8, 'Ticket:', 0, 0, 'L');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(110, 8, $id_venta, 0, 0, 'L');
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(20, 8, 'Fecha:', 0, 0, 'L');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(20, 8, $Fecha, 0, 1, 'L');
 
         //Encabezado Cliente
         $pdf->SetFillColor(0,0,0);
         $pdf->SetTextColor(255,255,255);
-        $pdf->Cell(15, 5, 'C. I.', 0, 0, 'L', true);
-        $pdf->Cell(37, 5, 'Nombre', 0, 0, 'L', true);
-        $pdf->Cell(15, 5, 'Telefono', 0, 1, 'L', true);
-
+        $pdf->Cell(50, 5, 'C. I.', 0, 0, 'L', true);
+        $pdf->Cell(50, 5, 'Nombre', 0, 0, 'L', true);
+        $pdf->Cell(50, 5, 'Telefono', 0, 0, 'L', true);
+        if($tipo == 0){
+            $pdf->Cell(50, 5,  utf8_decode('Dirección'), 0, 1, 'L', true);
+            $clidir =  $cliente['direccion'];
+        } else{
+            $pdf->Cell(50, 5,  ' ', 0, 1, 'L', true);
+        }
         $pdf->SetTextColor(0,0,0);
-        $pdf->Cell(15, 5, $cliente['ci'], 0, 0, 'L');
-        $pdf->Cell(37, 5,utf8_decode( $cliente['nombre'].' '.$cliente['apellido']), 0, 0, 'L');
-        $pdf->Cell(15, 5, $cliente['telefono'], 0, 0, 'L');
+        $pdf->Cell(50, 5, $cliente['ci'], 0, 0, 'L');
+        $pdf->Cell(50, 5,utf8_decode( $cliente['nombre'].' '.$cliente['apellido']), 0, 0, 'L');
+        $pdf->Cell(50, 5, $cliente['telefono'], 0, 0, 'L');
+        if($tipo == 0){
+            $pdf->Cell(50, 5, $clidir, 0, 1, 'L');
+        } else{
+            $pdf->Cell(50, 5,  ' ', 0, 1, 'L');
+        }
+        
         $pdf->Ln();
-
-        //Encabezado Cuartos
+        //Encabezado Productos
         $pdf->SetFillColor(0,0,0);
         $pdf->SetTextColor(255,255,255);
-        $pdf->Cell(9, 5, 'Cuarto', 0, 0, 'L', true);
-        $pdf->Cell(12, 5, 'Categoria', 0, 0, 'L', true);
-        $pdf->Cell(11, 5, 'Hr. Inicio', 0, 0, 'L', true);
-        $pdf->Cell(11, 5, 'Hr. Fin', 0, 0, 'L', true);
-        $pdf->Cell(13, 5, 'Precio hora', 0, 0, 'L', true);
-        $pdf->Cell(11, 5, 'Sub Total', 0, 1, 'L', true);
+        $pdf->Cell(40, 5, 'Producto', 0, 0, 'L', true);
+        $pdf->Cell(80, 5, 'Descripcion', 0, 0, 'L', true);
+        $pdf->Cell(25, 5, 'Categoria', 0, 0, 'L', true);
+        $pdf->Cell(18, 5, 'Precio', 0, 0, 'L', true);
+        $pdf->Cell(17, 5, 'Cantidad', 0, 0, 'L', true);
+        $pdf->Cell(20, 5, 'Sub Total', 0, 1, 'L', true);
         $pdf->SetTextColor(0,0,0);
         $total = 0.00;
-        foreach($cuartos as $row) {
+        foreach($productos as $row) {
             $total = $total + $row['sub_total'];
-            $pdf->Cell(9, 5, $row['numero'], 0, 0, 'L');
-            $pdf->Cell(12, 5, $row['nombre'], 0, 0, 'L');
-            $pdf->Cell(11, 5, $row['hora_inicio'], 0, 0, 'L');
-            $pdf->Cell(11, 5, $row['hora_fin'], 0, 'L');
-            $pdf->Cell(13, 5, $row['precio_hora'], 0, 0, 'L');
-            $pdf->Cell(11, 5, number_format($row['sub_total'], 2, '.', ','), 0, 1, 'L');
+            $pdf->Cell(40, 5, $row['producto'], 0, 0, 'L');
+            $pdf->Cell(80, 5, $row['descrip'], 0, 0, 'L');
+            $pdf->Cell(25, 5, $row['nombre'], 0, 0, 'L');
+            $pdf->Cell(18, 5, $row['precio'], 0, 0, 'L');
+            $pdf->Cell(17, 5, $row['cantidad'], 0, 'L');
+            $pdf->Cell(20, 5, number_format($row['sub_total'], 2, '.', ','), 0, 1, 'L');
         }
         $pdf->Ln();
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(68, 3,'Total a pagar', 0, 1, 'R');
-        $pdf->SetFont('Arial','',6);
-        $pdf->Cell(68, 5, number_format($total, 2, '.', ',').' Bs.', 0, 1, 'R');
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(200, 3,'Total a pagar', 0, 1, 'R');
+        $pdf->SetFont('Arial','',10);
+        $pdf->Cell(200, 5, number_format($total, 2, '.', ',').' Bs.', 0, 1, 'R');
         $pdf->Output();
     } 
     
     public function disponibles()
     {
-        $hora_inicio = $_POST['hora_inicio'];
-        $cantidad = $_POST['cantidad'];
-        $hora_fin = date('H:i',strtotime ( '+'.$cantidad.' minute' , strtotime ($hora_inicio) )) ;
-        $categoria = $_POST['categoria'];
-        $data = $this->model->getDisponibles($categoria, $hora_inicio, $hora_fin);
+        $categoria = $_POST['categoria']; 
+        $data = $this->model->getDisponibles($categoria);
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
@@ -259,7 +279,7 @@ class Reservas extends Controller {
         $usuario = $_POST['usuario'];
         
         if (empty($desde) && empty($hasta) && empty($ci)&& empty($usuario)){
-            $data = $this->model->getHistorialReservas();
+            $data = $this->model->getHistorialVentas();
         }else if( $ci=="" && $usuario=="" ){
             $data = $this->model->getRangoFechas($desde, $hasta);
         }else if( !empty($ci) && empty($usuario)){
@@ -278,9 +298,9 @@ class Reservas extends Controller {
         $pdf = new FPDF('P','mm', 'Letter');//array ancho y alto
         $pdf->AddPage();
         $pdf->SetMargins(10, 0, 0);
-        $pdf->SetTitle('Reporte Reservas');
+        $pdf->SetTitle('Reporte Ventas');
         $pdf->SetFont('Arial','B',20);
-        $pdf->Cell(200, 10, utf8_decode('Reporte de Reservas'), 0, 1, 'C');
+        $pdf->Cell(200, 10, utf8_decode('Reporte de Ventas'), 0, 1, 'C');
         $pdf->Image(base_url . 'Assets/img/log.png', 196, 7, 14, 15);// , tamaño, atura, 25*25 
         $pdf->SetFont('Arial','B',10);
         $pdf->Cell(15, 5, 'Desde:', 0, 0, 'L');

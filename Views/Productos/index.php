@@ -57,6 +57,7 @@
             <th>Nombre</th>
             <th>Descripcion</th>
             <th>Precio</th>
+            <th>Stock</th>
             <th>Disponibilidad</th>
             <th>Estado</th>
             <th>Categoria</th>
@@ -94,6 +95,10 @@
                         <input id="precio" class="form-control" type="text" name="precio" placeholder="Precio">
                     </div>
                     <div class="form-group">
+                        <label for="stock">Stock</label>
+                        <input id="stock" class="form-control" type="number" name="stock" placeholder="Stock">
+                    </div>
+                    <div class="form-group">
                         <label for="disponibilidad">Disponibilidad</label>
                         <select id="disponibilidad" class="form-control" name="disponibilidad">
                             <option value="<?php echo 1;?>">Disponible</option>
@@ -116,7 +121,7 @@
                         </select>
                     </div>
                     <div class="alert alert-danger text-center d-none" id="alertaL" role="alert">Los campos Nombre y descripcion solo aceptan letras</div>
-                    <div class="alert alert-danger text-center d-none" id="alertaN" role="alert">El campo precio solo admite numeros con decimal ej.: 99.80</div>
+                    <div class="alert alert-danger text-center d-none" id="alertaN" role="alert">El campo stock solo admite números y el precio números con decimal ej.: 99.80</div>
                    <button class="btn btn-primary" type="button" onclick="registrarProducto(event);" id="btnAccion">Registrar</button>
                    <button class="btn btn-danger"  data-dismiss="modal">Cancelar</button>
                 </form>
